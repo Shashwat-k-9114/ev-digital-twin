@@ -1,5 +1,5 @@
+streamlit
 pandas
 scikit-learn
+firebase-admin
 joblib
-streamlit
-streamlit-autorefresh

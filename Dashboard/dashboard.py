@@ -1,48 +1,64 @@
 import streamlit as st
 import pandas as pd
 import joblib
-import os
 import time
-from streamlit_autorefresh import st_autorefresh
+import firebase_admin
+from firebase_admin import credentials, db
+from datetime import datetime
 
-# Load model
+# Load Firebase credentials
+if not firebase_admin._apps:
+    cred = credentials.Certificate("firebase_config.json")
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://ev-digital-twin-default-rtdb.firebaseio.com/'
+    })
+
+# Load ML model
 model = joblib.load("Models/ev_anomaly_model.pkl")
 
-# Auto-refresh every 2 seconds
-st_autorefresh(interval=2000, key="refresh_counter")
+# Streamlit UI setup
+st.set_page_config(page_title="EV Digital Twin", layout="wide")
+st.title("🔋 EV Digital Twin – Live Health Monitor")
 
-st.set_page_config(page_title="⚙️ Real-Time EV Dashboard", layout="wide")
-st.title("🔴 Live EV Health Monitoring Dashboard")
+# Autorefresh every 10 seconds
+st.markdown("<meta http-equiv='refresh' content='10'>", unsafe_allow_html=True)
 
-file_path = "Data/demo_ev_data.csv"
+# Fetch data from Firebase
+@st.cache_data(ttl=5)
+def get_live_data():
+    ref = db.reference("ev_data_stream")
+    data = ref.get()
+    if not data:
+        return pd.DataFrame()
+    df = pd.DataFrame(list(data.values()))
+    df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce")
+    df = df.dropna().sort_values("timestamp", ascending=False).reset_index(drop=True)
+    return df
 
-if not os.path.exists(file_path):
-    st.warning("Waiting for live_ev_data.csv to be created...")
-    st.stop()
-
-# Read data
-df = pd.read_csv(file_path)
+# Load live data
+df = get_live_data()
 
 if df.empty:
-    st.info("Live data is streaming but no rows yet...")
+    st.warning("⚠️ No data received from Firebase.")
     st.stop()
 
-# Keep last 100 records
-df = df.tail(100)
-
 # Predict anomalies
-features = df[["battery_temp", "state_of_charge", "motor_rpm", "vehicle_speed", "ambient_temp"]]
-df["predicted_anomaly"] = model.predict(features)
+features = ["battery_temp", "state_of_charge", "motor_rpm", "vehicle_speed", "ambient_temp"]
+df["anomaly"] = model.predict(df[features])
 
-# Dashboard display
+# Show recent data
+st.subheader("📡 Latest Sensor Snapshot")
+st.dataframe(df[["timestamp"] + features + ["anomaly"]].head(10), use_container_width=True)
+
+# Metrics
 col1, col2 = st.columns(2)
+col1.metric("🛑 Anomalies (last 100)", int(df["anomaly"].head(100).sum()))
+col2.metric("⚙️ Total Records", len(df))
 
-with col1:
-    st.metric("📊 Total Records", len(df))
-    st.metric("⚠️ Anomalies Detected", df["predicted_anomaly"].sum())
+# Charts
+st.subheader("📈 Battery Temp & Motor RPM")
+chart_df = df.sort_values("timestamp").set_index("timestamp")
+st.line_chart(chart_df[["battery_temp", "motor_rpm"]])
 
-with col2:
-    st.line_chart(df[["battery_temp", "state_of_charge", "motor_rpm", "vehicle_speed"]])
-
-st.subheader("🔍 Recent EV Data with Predictions")
-st.dataframe(df[::-1], use_container_width=True)
+st.subheader("🚀 Speed & State of Charge")
+st.line_chart(chart_df[["vehicle_speed", "state_of_charge"]])
