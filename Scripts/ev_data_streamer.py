@@ -20,7 +20,7 @@ while True:
     entry = generate_entry()
     df = pd.DataFrame([entry])
     
-    with open("live_ev_data.csv", "a") as f:
+    with open("Data/live_ev_data.csv", "a") as f:
         df.to_csv(f, index=False, header=f.tell()==0)
     
     print(f"⏱️  Row added: {entry}")

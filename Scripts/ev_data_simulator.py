@@ -26,5 +26,5 @@ for i in range(NUM_RECORDS):
 df = pd.DataFrame(data)
 
 # Save to CSV
-df.to_csv("ev_sensor_data.csv", index=False)
+df.to_csv("Data/ev_sensor_data.csv", index=False)
 print("✅ Data simulation complete. File saved as 'ev_sensor_data.csv'.")
