@@ -2,25 +2,25 @@ import streamlit as st
 import pandas as pd
 import joblib
 import time
+import os
+import json
 import firebase_admin
-import os, json
-from firebase_admin import credentials, initialize_app, db
 from firebase_admin import credentials, db
 from datetime import datetime
 
-# Load Firebase credentials
+# ✅ Load Firebase credentials safely
 if not firebase_admin._apps:
     if "FIREBASE_CONFIG_JSON" in os.environ:
-        # ✅ Running on Streamlit Cloud
-        cred = credentials.Certificate(json.loads(os.environ["FIREBASE_CONFIG_JSON"]))
+        # Running on Streamlit Cloud
+        firebase_json = json.loads(os.environ["FIREBASE_CONFIG_JSON"])
+        cred = credentials.Certificate(firebase_json)
     else:
-        # ✅ Running locally
+        # Running locally
         cred = credentials.Certificate("firebase_config.json")
 
-    initialize_app(cred, {
+    firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://ev-digital-twin-default-rtdb.firebaseio.com/'
     })
-
 
 # Load ML model
 model = joblib.load("Models/ev_anomaly_model.pkl")
