@@ -54,7 +54,6 @@ ev-digital-twin/
 ├── README.md
 └── .gitignore
 
-`
 
 ---
 
