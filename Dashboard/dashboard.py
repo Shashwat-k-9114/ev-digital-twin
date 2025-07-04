@@ -6,7 +6,7 @@ import time
 from streamlit_autorefresh import st_autorefresh
 
 # Load model
-model = joblib.load("ev_anomaly_model.pkl")
+model = joblib.load("Models/ev_anomaly_model.pkl")
 
 # Auto-refresh every 2 seconds
 st_autorefresh(interval=2000, key="refresh_counter")
