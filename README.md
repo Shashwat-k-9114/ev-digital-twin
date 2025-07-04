@@ -105,7 +105,7 @@ json
 
 ## 🛡 Security
 
-* Your Firebase admin config is private.
+* The Firebase admin config is private.
 * Do NOT commit `firebase_config.json` — it is ignored via `.gitignore`.
 
 ---
