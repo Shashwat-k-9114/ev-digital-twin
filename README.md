@@ -1,114 +1,166 @@
-# ⚡ EV Digital Twin – Real-Time Anomaly Detection Dashboard
+# ⚡ EV Digital Twin – Real-time Anomaly Detection Dashboard
 
-A real-time EV (Electric Vehicle) health monitoring and anomaly detection system using:
-
-🚗 Simulated sensor data → ☁️ streamed to Firebase → 📊 analyzed live in a Streamlit dashboard  
-Built with zero-cost cloud tools and open-source libraries.
+A real-time EV Digital Twin system that simulates sensor data, detects anomalies using machine learning, and visualizes live telemetry using Firebase + Streamlit — with full end-to-end cloud sync.
 
 ---
 
-## 🔍 Project Overview
+## 🚀 Project Overview
 
-This project simulates a real-time EV environment by:
-- Generating synthetic vehicle sensor data every second
-- Streaming it to Firebase Realtime Database
-- Predicting anomalies using a trained machine learning model
-- Visualizing insights in a clean, cloud-hosted dashboard
-
-Perfect for predictive maintenance, EV health monitoring, and digital twin use cases.
+This project simulates and monitors electric vehicle (EV) telemetry data in real-time, detects anomalies via a trained ML model, and displays it all through a dynamic dashboard. It's designed to demonstrate how a digital twin can be used for predictive maintenance and performance monitoring in electric mobility systems.
 
 ---
 
-## ⚙️ Tech Stack
+## 🧠 Key Features
 
-| Layer           | Tech                           |
-|----------------|--------------------------------|
-| Simulator       | Python + Firebase Admin SDK    |
-| ML Model        | Scikit-Learn (Random Forest)   |
-| Dashboard       | Streamlit                      |
-| Backend (cloud) | Firebase Realtime Database     |
-| Hosting         | Streamlit Cloud                |
+- 🔁 Real-time EV data simulator (Python)
+- 🧪 Trained machine learning anomaly detector (RandomForest)
+- ☁️ Firebase Realtime Database integration (push & pull)
+- 📊 Interactive Streamlit dashboard with live charts
+- 🔄 Updates every 2 seconds autonomously (no refresh needed)
+- 🛠️ Production-ready and free to deploy
 
 ---
 
-## 🎯 Features
+## 🛠 Tech Stack
 
-- 🔁 Real-time streaming of EV sensor data
-- 🧠 ML-based anomaly detection (battery/motor faults)
-- 📈 Live charts (temperature, RPM, SoC)
-- 🚨 Anomaly alerts and metrics
-- 🌐 Zero-cost cloud deployment (Firebase + Streamlit)
+| Layer        | Tools Used                                       |
+|--------------|--------------------------------------------------|
+| Simulator    | Python, Pandas, NumPy                            |
+| ML Model     | scikit-learn, joblib                             |
+| Backend      | Firebase Realtime Database                       |
+| Dashboard    | Streamlit, Plotly                                |
+| Infra        | Replit (data simulator), Local/Cloud Streamlit   |
+| Deployment   | GitHub + Streamlit Cloud                         |
+
+---
+
+## 📁 Folder Structure
 
 
-## 🚀 Run It Locally
 
-### 1. Clone the repo
+ev-digital-twin/
+│
+├── Dashboard/               # Streamlit dashboard
+│   └── dashboard.py
+│
+├── Scripts/                 # Data generator (sensor simulator)
+│   └── ev\_data\_simulator.py
+│
+├── MLModel/                 # Anomaly detection model
+│   └── train\_ev\_model.py
+│
+├── firebase\_config.json     # (Private, add to .gitignore)
+├── requirements.txt
+├── README.md
+└── .gitignore
 
-```bash
-git clone https://github.com/your-username/ev-digital-twin.git
-cd ev-digital-twin
-2. Install dependencies
-bash
-Copy
-Edit
-pip install -r requirements.txt
-3. Add your Firebase credentials
-Download your service account key from Firebase Console → Project Settings → Service Accounts → "Generate private key"
+`
 
-Save it as:
+---
 
-pgsql
-Copy
-Edit
-firebase_config.json
-✅ Do NOT push this file to GitHub.
+## 📊 How It Works
 
-4. Start the simulator
-bash
-Copy
-Edit
-python scripts/ev_data_simulator.py
-5. Launch the dashboard
-bash
-Copy
-Edit
-streamlit run dashboard/dashboard.py
-🌐 Streamlit Cloud Link
-🟢 Live Dashboard Demo
+1. `ev_data_simulator.py` generates fake EV telemetry (speed, temperature, battery voltage, etc.)
+2. Every 2 seconds, it pushes data to Firebase Realtime Database.
+3. The dashboard (`dashboard.py`) reads data live from Firebase.
+4. It runs a trained RandomForest model on every entry to detect anomalies.
+5. Detected anomalies are highlighted on the dashboard in real-time.
 
-🧠 Model Training (Optional)
-To retrain your model on simulated data:
+---
 
-bash
-Copy
-Edit
-python scripts/train_ev_model.py
-🛡️ Firebase Database Rules (for public read access)
+## 📦 Installation & Setup
+
+1. Clone the repo:
+   
+   git clone https://github.com/yourusername/ev-digital-twin.git
+   cd ev-digital-twin
+`
+
+2. Create virtual environment & install dependencies:
+
+   
+   pip install -r requirements.txt
+   
+
+3. Add your Firebase admin SDK JSON file:
+
+   * Save it as `firebase_config.json`
+   * Add this line to `.gitignore`:
+
+     
+     firebase_config.json
+     
+
+4. Run the model trainer (once):
+
+
+   python MLModel/train_ev_model.py
+
+
+5. Start simulator:
+
+
+   python Scripts/ev_data_simulator.py
+
+
+6. Run dashboard:
+
+
+   streamlit run Dashboard/dashboard.py
+
+
+---
+
+## 🧪 Sample Live Data Format
+
 json
-Copy
-Edit
 {
-  "rules": {
-    ".read": true,
-    ".write": true
-  }
+  "timestamp": "2025-07-04 19:36:18",
+  "speed": 82.5,
+  "battery_temp": 45.0,
+  "motor_temp": 67.2,
+  "voltage": 403.5,
+  "current": 130.2,
+  "anomaly": 0
 }
-👨‍💻 Authors
-Shashwat Kashyap (@Shashwat-k-9114)
 
-
-📜 License
-MIT License — feel free to use, fork, and build on this!
-
-🏁 Acknowledgments
-Firebase for free cloud infra
-
-Streamlit for easy deployment
-
-scikit-learn for quick model prototyping
-
-yaml
-Copy
-Edit
 
 ---
+
+## 🛡 Security
+
+* Your Firebase admin config is private.
+* Do NOT commit `firebase_config.json` — it is ignored via `.gitignore`.
+
+---
+
+## 🖼 Demo Preview
+
+> Insert a screenshot or GIF of your dashboard here
+
+---
+
+## 🧠 Future Improvements
+
+* Integrate real IoT hardware (e.g., Raspberry Pi + CAN bus)
+* Add dashboard analytics (e.g., anomaly history, maintenance alerts)
+* Dockerize the project for containerized deployment
+* Setup CI/CD pipeline for deployment to Streamlit Cloud or GCP
+
+---
+
+## 🤝 Credits
+
+Built with ❤️ by \[Your Name]
+GitHub: [github.com/yourusername](https://github.com/yourusername)
+
+---
+
+## 📄 License
+
+MIT License
+
+
+
+Let me know if you'd like this tailored with your GitHub username or project repo link inserted.
+
