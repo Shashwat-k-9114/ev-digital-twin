@@ -122,7 +122,7 @@ json
 ## 🤝 Credits
 
 Built by Shashwat Kashyap
-GitHub: [github.com/yourusername](https://github.com/Shashwat-k-9114)
+GitHub: [github.com/Shashwat-k-9114](https://github.com/Shashwat-k-9114)
 
 ---
 
