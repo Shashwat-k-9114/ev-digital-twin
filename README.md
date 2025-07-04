@@ -34,29 +34,6 @@ This project simulates and monitors electric vehicle (EV) telemetry data in real
 
 ---
 
-## 📁 Folder Structure
-
-
-
-ev-digital-twin/
-│
-├── Dashboard/               # Streamlit dashboard
-│   └── dashboard.py
-│
-├── Scripts/                 # Data generator (sensor simulator)
-│   └── ev\_data\_simulator.py
-│
-├── MLModel/                 # Anomaly detection model
-│   └── train\_ev\_model.py
-│
-├── firebase\_config.json     # (Private, add to .gitignore)
-├── requirements.txt
-├── README.md
-└── .gitignore
-
-
----
-
 ## 📊 How It Works
 
 1. `ev_data_simulator.py` generates fake EV telemetry (speed, temperature, battery voltage, etc.)
