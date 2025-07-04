@@ -14,7 +14,7 @@ st_autorefresh(interval=2000, key="refresh_counter")
 st.set_page_config(page_title="⚙️ Real-Time EV Dashboard", layout="wide")
 st.title("🔴 Live EV Health Monitoring Dashboard")
 
-file_path = "live_ev_data.csv"
+file_path = "Data/live_ev_data.csv"
 
 if not os.path.exists(file_path):
     st.warning("Waiting for live_ev_data.csv to be created...")
