@@ -1,10 +1,24 @@
 import firebase_admin
 from firebase_admin import credentials, db
 import random, time
+import os
+import json
 from datetime import datetime
 
 # Load your private key JSON
-cred = credentials.Certificate("firebase_config.json")
+# ✅ Load Firebase credentials safely
+if not firebase_admin._apps:
+    if "FIREBASE_CONFIG_JSON" in os.environ:
+        # Running on Streamlit Cloud
+        firebase_json = json.loads(os.environ["FIREBASE_CONFIG_JSON"])
+        cred = credentials.Certificate(firebase_json)
+    else:
+        # # Running locally
+        cred = credentials.Certificate("firebase_config.json")
+
+    firebase_admin.initialize_app(cred, {
+        'databaseURL': 'https://ev-digital-twin-default-rtdb.firebaseio.com/'
+    })
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://ev-digital-twin-default-rtdb.firebaseio.com/'
 })
