@@ -121,16 +121,9 @@ json
 
 ## 🤝 Credits
 
-Built with ❤️ by \[Your Name]
-GitHub: [github.com/yourusername](https://github.com/yourusername)
+Built by Shashwat Kashyap
+GitHub: [github.com/yourusername](https://github.com/Shashwat-k-9114)
 
 ---
 
-## 📄 License
-
-MIT License
-
-
-
-Let me know if you'd like this tailored with your GitHub username or project repo link inserted.
 
