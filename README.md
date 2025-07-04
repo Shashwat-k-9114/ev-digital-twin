@@ -134,12 +134,6 @@ json
 
 ---
 
-## 🖼 Demo Preview
-
-> Insert a screenshot or GIF of your dashboard here
-
----
-
 ## 🧠 Future Improvements
 
 * Integrate real IoT hardware (e.g., Raspberry Pi + CAN bus)
